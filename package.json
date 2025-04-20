@@ -1,0 +1,22 @@
+{
+  "name": "vidtube",
+  "version": "1.0.0",
+  "description": "A youtube inspired video browsing platform",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Backend",
+    "MongoDb",
+    "Express",
+    "Javascript"
+  ],
+  "author": "Mohit Anil Kumar",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3"
+  }
+}
