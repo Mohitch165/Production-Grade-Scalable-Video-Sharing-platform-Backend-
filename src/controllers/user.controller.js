@@ -2,7 +2,7 @@ import { asyncHandler } from "../util/asyncHandler.js";
 import { ApiError } from "../util/ApiError.js";
 import { User } from "../models/users.model.js";
 import { z } from "zod";
-import { uploadToCloudinary } from "../util/cloudinary.js";
+import { uploadToCloudinary, deleteFromCloudinary } from "../util/cloudinary.js";
 import { ApiResponse } from "../util/ApiResponse.js";
 
 const registerSchema = z.object({
@@ -61,22 +61,33 @@ const registerUser = asyncHandler(async (req, res) => {
       }
 
 
-      const user = await User.create({
-        fullname,
-        username,
-        email,
-        password,
-        avatar: avatar?.url,
-        banner: banner?.url
-      })
-
-      const createdUser = await User.findById(user._id).select("-password -refreshToken");
-
-      if(!createdUser) {
-        throw new ApiError(404, "User not found");
+      try {
+        const user = await User.create({
+          fullname,
+          username,
+          email,
+          password,
+          avatar: avatar?.url,
+          banner: banner?.url
+        })
+  
+        const createdUser = await User.findById(user._id).select("-password -refreshToken");
+  
+        if(!createdUser) {
+          throw new ApiError(404, "User not found");
+        }
+  
+        res.status(201).json( new ApiResponse(201, createdUser, "User created successfully"));
+      } catch (error) {
+        console.log("Error creating user", error);
+        if(avatar){
+          await deleteFromCloudinary(avatar?.public_id);
+        }
+        if(banner){
+          await deleteFromCloudinary(banner?.public_id);
+        }
+        throw new ApiError(408, "Error creating user");
       }
-
-      res.status(201).json( new ApiResponse(201, createdUser, "User created successfully"));
 });
 
 export { registerUser };
