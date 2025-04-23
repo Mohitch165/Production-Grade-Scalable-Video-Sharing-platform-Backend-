@@ -20,7 +20,7 @@ const userSchema = new Schema(
         lowercase: true,
         trim: true,
     },
-    fullName: {
+    fullname: {
         type: String,
         required: true,
         trim: true,
@@ -30,7 +30,7 @@ const userSchema = new Schema(
         type: String,
         required: true
     },
-    coverImage: {
+    banner: {
         type: String,
         required: true
     },
@@ -58,7 +58,7 @@ userSchema.pre("save", async function(next) {
     next();
 })
 
-userSchema.methods.comaparePasswords = async function(password) {
+userSchema.methods.comparePasswords = async function(password) {
     return await bcrypt.compare(password, this.password);
 }
 
@@ -68,7 +68,7 @@ userSchema.methods.createAccessToken = function() {
             _id: this._id,
             username: this.username,
             email: this.email,
-            fullName: this.fullName,
+            fullname: this.fullname,
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
