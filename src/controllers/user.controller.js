@@ -89,5 +89,57 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(408, "Error creating user");
       }
 });
+const generateTokens = async (userId) => {
+ try {
+   const user = await User.findById(userId);
+   if(!user) {
+     throw new ApiError(404, "User not found");
+   }
+   const accessToken = user.createAccessToken();
+   const refreshToken = user.createRefreshToken();
+   user.refreshToken = refreshToken;
+   await user.save({ validateBeforeSave: false });
+   return { accessToken, refreshToken };
+ } catch (error) {
+   throw new ApiError(408, "Error generating tokens");
+ }
+}
 
-export { registerUser };
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, password, username } = req.body;
+
+  if(!email || !password) {
+    throw new ApiError(409, "Email and password are required");
+  }
+
+  const existingUser = await User.findOne({
+    $or: [{ username }, { email }],
+  });
+
+  if (!existingUser) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const passwordCheck = await existingUser.comparePasswords(password);
+
+  if (!passwordCheck) {
+    throw new ApiError(401, "Invalid credentials");
+  }
+
+  const { accessToken, refreshToken } = await generateTokens(existingUser._id);
+
+  const loggedInUser = await User.findById(existingUser._id)
+    .select("-password -refreshToken");
+
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  }
+
+  return res
+  .cookie("accessToken", accessToken, options)
+  .cookie("refreshToken", refreshToken, options)
+  .status(200)
+  .json(new ApiResponse(200, { user: loggedInUser, accessToken, refreshToken }, "User logged in successfully"));
+});
+export { registerUser, loginUser };
