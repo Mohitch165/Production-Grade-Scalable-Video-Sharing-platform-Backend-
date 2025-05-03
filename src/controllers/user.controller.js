@@ -131,6 +131,10 @@ const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(existingUser._id)
     .select("-password -refreshToken");
 
+    if(!loggedInUser) {
+      throw new ApiError(404, "User not found");
+    }
+
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
