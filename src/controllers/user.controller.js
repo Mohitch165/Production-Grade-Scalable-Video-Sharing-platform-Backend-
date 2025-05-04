@@ -4,7 +4,7 @@ import { User } from "../models/users.model.js";
 import { z } from "zod";
 import { uploadToCloudinary, deleteFromCloudinary } from "../util/cloudinary.js";
 import { ApiResponse } from "../util/ApiResponse.js";
-import { jwt } from "jsonwebtoken";
+import  jwt  from "jsonwebtoken";
 
 const registerSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
