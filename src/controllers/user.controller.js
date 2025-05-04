@@ -148,6 +148,31 @@ const loginUser = asyncHandler(async (req, res) => {
   .json(new ApiResponse(200, { user: loggedInUser, accessToken, refreshToken }, "User logged in successfully"));
 });
 
+const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refreshToken: "",
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  };
+
+  return res
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .status(200)
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
+
 const regenRefAccToken = asyncHandler(async (req, res) => {
   const expRefToken = req.cookies.refreshToken || req.body.refreshToken;
 
@@ -190,4 +215,5 @@ const regenRefAccToken = asyncHandler(async (req, res) => {
   }
 
 })
-export { registerUser, loginUser, regenRefAccToken };
+
+export { registerUser, loginUser, logoutUser,regenRefAccToken };
