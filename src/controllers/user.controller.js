@@ -4,6 +4,7 @@ import { User } from "../models/users.model.js";
 import { z } from "zod";
 import { uploadToCloudinary, deleteFromCloudinary } from "../util/cloudinary.js";
 import { ApiResponse } from "../util/ApiResponse.js";
+import { jwt } from "jsonwebtoken";
 
 const registerSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -146,4 +147,47 @@ const loginUser = asyncHandler(async (req, res) => {
   .status(200)
   .json(new ApiResponse(200, { user: loggedInUser, accessToken, refreshToken }, "User logged in successfully"));
 });
-export { registerUser, loginUser };
+
+const regenRefAccToken = asyncHandler(async (req, res) => {
+  const expRefToken = req.cookies.refreshToken || req.body.refreshToken;
+
+  if(!expRefToken) {
+    throw new ApiError(401, "Refresh Token is Required");
+  }
+
+  try {
+    const decodedToken =jwt.verify(expRefToken, process.env.REFRESH_TOKEN_SECRET);
+    const user =await User.findById(decodedToken?._id);
+
+    if(!user) {
+      throw new ApiError(401, "Invalid User Token");
+    }
+
+    if(expRefToken !== user?.refreshToken) {
+      throw new ApiError(401, "Invalid User Token");
+    }
+
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    }
+
+    const { accessToken, refreshToken: newRefreshToken } = 
+    await generateTokens(user._id);
+
+    return res
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", newRefreshToken, options)
+    .status(200)
+    .json(
+      new ApiResponse(200, 
+        { accessToken, 
+          refreshToken: newRefreshToken }, 
+          "Tokens Regenerated"
+        ));
+  } catch (error) {
+    throw new ApiError(500, "Something went wrong while regenerating tokens");
+  }
+
+})
+export { registerUser, loginUser, regenRefAccToken };
