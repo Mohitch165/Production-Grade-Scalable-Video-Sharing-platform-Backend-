@@ -216,4 +216,23 @@ const regenRefAccToken = asyncHandler(async (req, res) => {
 
 })
 
-export { registerUser, loginUser, logoutUser,regenRefAccToken };
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  if(!oldPassword || !newPassword) {
+    throw new ApiError(409, "Old password and new password are required");
+  }
+
+  const user = await User.findById(req.user?._id);
+  const isValidPassword = await user.comparePasswords(oldPassword);
+
+  if(!isValidPassword) {
+    throw new ApiError(401, "Invalid credentials");
+  }
+
+  user.passwordd = newPassword;
+  await user.save({ validateBeforeSave: false });
+  return res.status(200).json(new ApiResponse(200, {}, "Password changed successfully"));
+})
+
+export { registerUser, loginUser, logoutUser, regenRefAccToken, changePassword };
