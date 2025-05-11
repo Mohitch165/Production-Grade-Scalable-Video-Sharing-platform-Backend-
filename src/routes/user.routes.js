@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { registerUser, loginUser, logoutUser } from "../controllers/user.controller.js";
+import { registerUser, loginUser, logoutUser, changePassword } from "../controllers/user.controller.js";
 
 import { verifyJWT } from "../middleware/auth.middlewares.js";
 
@@ -21,5 +21,6 @@ router.route("/register").post(upload.fields([
 
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJWT,logoutUser);
+router.route("/change-password").post(verifyJWT, changePassword);
 
 export default router;

@@ -230,7 +230,7 @@ const changePassword = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid credentials");
   }
 
-  user.passwordd = newPassword;
+  user.password = newPassword;
   await user.save({ validateBeforeSave: false });
   return res.status(200).json(new ApiResponse(200, {}, "Password changed successfully"));
 })
@@ -247,7 +247,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     const avatarLocalPath = req.files.avatar[0].path;
     const avatar = await uploadToCloudinary(avatarLocalPath);
     if (!avatar?.url) {
-      return res.status(500).json({ message: "Failed to upload avatar" });
+      throw new ApiError(500, "Failed to upload avatar");
     }
     updateFields.avatar = avatar.url;
   }
@@ -257,13 +257,13 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     const bannerLocalPath = req.files.banner[0].path;
     const banner = await uploadToCloudinary(bannerLocalPath);
     if (!banner?.url) {
-      return res.status(500).json({ message: "Failed to upload banner" });
+      throw new ApiError(500, "Failed to upload banner");
     }
     updateFields.banner = banner.url;
   }
 
   if (Object.keys(updateFields).length === 0) {
-    return res.status(400).json({ message: "No valid fields to update." });
+    throw new ApiError(400, "No Valid fields to update, please give valid fields");
   }
 
   const updatedUser = await User.findByIdAndUpdate(
