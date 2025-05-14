@@ -1,19 +1,94 @@
 import mongoose, { isValidObjectId } from "mongoose";
-import { Video } from "../models/video.model.js";
+import { Video } from "../models/videos.model.js";
 import { User } from "../models/users.model.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { ApiError } from "../util/ApiError.js";
+import { ApiResponse } from "../util/ApiResponse.js";
+import { asyncHandler } from "../util/asyncHandler.js";
+import { uploadToCloudinary } from "../util/cloudinary.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
   //TODO: get all videos based on query, sort, pagination
+  const filters = {};
+
+  if(query){
+    filters.title = {$regex: query, $options: "i"};
+  }
+
+  if(!userId || !isValidObjectId(userId)){
+    throw new ApiError(400, "Invalid user id");
+  }
+
+  filters.owner = userId;
+
+  const sort = {};
+  if(sortBy && sortType){
+    sort[sortBy] = sortType;
+  }
+
+  const videos = await Video
+  .find(filters)
+  .sort(sort)
+  .skip((page - 1) * limit)
+  .limit(limit);
+
+  const totalVideos = await Video.countDocuments(filters);
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200, {
+    videos, 
+    totalVideos,
+    page: parseInt(page), 
+    limit: parseInt(limit)},
+    "Videos fetched successfully"));
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
   // TODO: get video, upload to cloudinary, create video
+  const videoLocalPath = req.files?.videoFile?.[0]?.path;
+  const thumbnailLocalPath = req.files?.thumbnailFile?.[0]?.path;
+  const user = req.user;
+
+  if (!videoLocalPath || !thumbnailLocalPath) {
+    throw new ApiError(400, "Video and thumbnail are required");
+  }
+
+  if (!title || !description) {
+    throw new ApiError(400, "Title and description are required");
+  }
+
+  let videoFile, thumbnailFile;
+  try {
+    videoFile = await uploadToCloudinary(videoLocalPath);
+    thumbnailFile = await uploadToCloudinary(thumbnailLocalPath);
+  } catch (error) {
+    throw new ApiError(
+      500,
+      "Error uploading video/thumbnail to Cloudinary: " + error.message
+    );
+  }
+
+  let videoUpload;
+  try {
+    videoUpload = await Video.create({
+      title,
+      description,
+      videoFile: videoFile.url,
+      thumbnailFile: thumbnailFile.url,
+      owner: user._id,
+      isPublished: true,
+      views: 0,
+      duration: 0,
+    });
+  } catch (error) {
+    throw new ApiError(500, "Error creating video: " + error.message);
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(201, videoUpload, "Video published successfully"));
 });
 
 const getVideoById = asyncHandler(async (req, res) => {
@@ -35,11 +110,4 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
 });
 
-export {
-  getAllVideos,
-  publishAVideo,
-  getVideoById,
-  updateVideo,
-  deleteVideo,
-  togglePublishStatus,
-};
+export { getAllVideos, publishAVideo, getVideoById, updateVideo, deleteVideo,togglePublishStatus };
