@@ -11,9 +11,11 @@ const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort, pagination
   const filters = {};
 
-  if(query){
-    filters.title = {$regex: query, $options: "i"};
+  if(!query){
+    throw new ApiError(400, "Query is required");
   }
+
+  filters.title = { $regex: query, $options: "i" };
 
   if(!userId || !isValidObjectId(userId)){
     throw new ApiError(400, "Invalid user id");
@@ -26,22 +28,40 @@ const getAllVideos = asyncHandler(async (req, res) => {
     sort[sortBy] = sortType;
   }
 
-  const videos = await Video
-  .find(filters)
-  .sort(sort)
-  .skip((page - 1) * limit)
-  .limit(limit);
+let videos;
 
-  const totalVideos = await Video.countDocuments(filters);
+ try {
 
-  return res
-  .status(200)
-  .json(new ApiResponse(200, {
-    videos, 
-    totalVideos,
-    page: parseInt(page), 
-    limit: parseInt(limit)},
-    "Videos fetched successfully"));
+   videos = await Video
+   .find(filters)
+   .sort(sort)
+   .skip((page - 1) * limit)
+   .limit(limit);
+
+ } catch (error) {
+
+   throw new ApiError(408, "Error fetching videos");
+   
+ }
+
+  try {
+
+    const totalVideos = await Video.countDocuments(filters);
+  
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {
+      videos, 
+      totalVideos,
+      page: parseInt(page), 
+      limit: parseInt(limit)},
+      "Videos fetched successfully"));
+
+  } catch (error) {
+
+    throw new ApiError(408, "Error fetching videos");
+
+  }
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
@@ -60,10 +80,14 @@ const publishAVideo = asyncHandler(async (req, res) => {
   }
 
   let videoFile, thumbnailFile;
+
   try {
+
     videoFile = await uploadToCloudinary(videoLocalPath);
     thumbnailFile = await uploadToCloudinary(thumbnailLocalPath);
+
   } catch (error) {
+
     throw new ApiError(
       500,
       "Error uploading video/thumbnail to Cloudinary: " + error.message
@@ -71,7 +95,9 @@ const publishAVideo = asyncHandler(async (req, res) => {
   }
 
   let videoUpload;
+  
   try {
+
     videoUpload = await Video.create({
       title,
       description,
@@ -81,14 +107,24 @@ const publishAVideo = asyncHandler(async (req, res) => {
       isPublished: true,
       views: 0,
       duration: 0,
-    });
-  } catch (error) {
-    throw new ApiError(500, "Error creating video: " + error.message);
-  }
 
-  return res
-    .status(201)
-    .json(new ApiResponse(201, videoUpload, "Video published successfully"));
+    });
+      return res
+        .status(201)
+        .json(
+          new ApiResponse(201, videoUpload, "Video published successfully")
+        );
+
+  } catch (error) {
+
+    if(videoFile){
+      await deleteFromCloudinary(videoFile?.public_id);
+    }
+    if(thumbnailFile){
+      await deleteFromCloudinary(thumbnailFile?.public_id);
+    }
+    throw new ApiError(500, "Error  video: " + error.message);
+  }
 });
 
 const getVideoById = asyncHandler(async (req, res) => {
