@@ -5,6 +5,7 @@ import { z } from "zod";
 import { uploadToCloudinary, deleteFromCloudinary } from "../util/cloudinary.js";
 import { ApiResponse } from "../util/ApiResponse.js";
 import  jwt  from "jsonwebtoken";
+import mongoose, { Types } from "mongoose";
 
 const registerSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -277,4 +278,115 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedUser, "User updated successfully"));
 });
 
-export { registerUser, loginUser, logoutUser, regenRefAccToken, changePassword, updateUserDetails };
+const getUserChannelDetails = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  if(!username?.trim()) {
+    throw new ApiError(409, "Username is required");
+  }
+
+  const channel =  await User.aggregate(
+    [
+      {
+        $match: {
+          username: username?.toLowerCase()
+        }
+      },
+      {
+        $lookup: {
+          from: "subscriptions",
+          localField: "_id",
+          foreignField: "channel",
+          as: "subscribers"
+        }
+      },
+      {
+        $lookup: {
+          from: "subscriptions",
+          localField: "_id",
+          foreignField: "subscriber",
+          as: "subscriptions"
+        }
+      },
+      {
+        $addFields: {
+          subscribersCount: { $size: "$subscribers" },
+          subscriptionsCount: { $size: "$subscriptions" },
+          }
+        }, 
+        {
+        $project: {
+          _id: 1,
+          username: 1,
+          fullname: 1,
+          avatar: 1,
+          banner: 1,
+          subscribersCount: 1,
+          subscriptionsCount: 1,
+        }
+      }
+    ]
+  )
+
+  if(!channel?.length) {
+    throw new ApiError(404, "Channel not found");
+  }
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200, channel[0], "Channel details fetched successfully"));
+})
+
+const watchHistory = asyncHandler(async (req, res) => {
+  const user = await User.aggregate(
+    [
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(req.user?._id)
+        }
+      },
+      {
+        $lookup: {
+          from: "videos",
+          localField: "watchHistory",
+          foreignField: "_id",
+          as: "watchHistory",
+          pipeline: [
+            {
+              $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner",
+                pipeline: [
+                  {
+                    $project: {
+                      _id: 1,
+                      username: 1,
+                      fullname: 1,
+                      email: 1,
+                      avatar: 1
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              $addFields: {
+                owner: { $arrayElemAt: ["$owner", 0] }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  )
+
+  if(!user?.length) {
+    throw new ApiError(404, "Watch history not found");
+  }
+
+  return res.status(200).json(new ApiResponse(200, user[0].watchHistory, "Watch history fetched successfully"));
+})
+
+export { registerUser, loginUser, logoutUser, regenRefAccToken, changePassword, updateUserDetails, getUserChannelDetails, watchHistory };
