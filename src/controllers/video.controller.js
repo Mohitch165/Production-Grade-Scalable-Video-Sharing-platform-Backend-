@@ -215,6 +215,10 @@ const updateVideo = asyncHandler(async (req, res) => {
 
   const updateFields = {};
 
+  if(!videoId || !isValidObjectId(videoId)){
+    throw new ApiError(408, "Video Id not entered or not valid")
+  }
+
   if (title) updateFields.title =  title;
   if (description) updateFields.description = description;
 
@@ -259,6 +263,41 @@ const updateVideo = asyncHandler(async (req, res) => {
 const deleteVideo = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   //TODO: delete video
+
+  if(!videoId || !isValidObjectId(videoId)){
+    throw new ApiError(400, "Video Id not entered or not valid")
+  }
+
+  let deletedVideo;
+
+  try {
+
+    deletedVideo = await Video.findByIdAndDelete(videoId);
+
+    if(!deletedVideo){
+      throw new ApiError(408, "Video not found");
+    }
+
+
+    const thumbnailPublicId = deletedVideo?.thumbnailFile?.public_id;
+    const videoPublicId = deletedVideo?.videoFile?.public_id;
+
+    if(videoPublicId){
+      await deleteFromCloudinary(videoPublicId);
+    }
+
+    if(thumbnailPublicId){
+      await deleteFromCloudinary(thumbnailPublicId);
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, deletedVideo, "Video deleted successfully"));
+      
+  } catch (error) {
+    throw new ApiError(500, "Error deleting video");
+  }
+
 });
 
 const togglePublishStatus = asyncHandler(async (req, res) => {

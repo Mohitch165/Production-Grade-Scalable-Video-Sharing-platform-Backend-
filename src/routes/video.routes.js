@@ -26,5 +26,7 @@ router.route("/updateVideoDetails/:videoId").put(verifyJWT, upload.fields([
         maxCount: 1
     }
 ]), updateVideo);
+router.route("/deleteVideo/:videoId").delete(verifyJWT, deleteVideo);
+router.route("/togglePublishStatus/:videoId").put(verifyJWT, togglePublishStatus);
 
 export default router;
