@@ -19,5 +19,6 @@ router.route("/uploadVideo").post(verifyJWT, upload.fields([
         maxCount: 1
     }
 ]), publishAVideo)
+router.route("/getVideo/:videoId").get(verifyJWT, getVideoById);
 
 export default router;

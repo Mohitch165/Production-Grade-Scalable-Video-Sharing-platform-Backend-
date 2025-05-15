@@ -129,7 +129,83 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
 const getVideoById = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
+  const user = req.user?._id;
   //TODO: get video by id
+
+  if(!videoId || !isValidObjectId(videoId)){
+    throw new ApiError(408, "Invalid video id");
+  }
+
+  const video = await Video.findById(videoId).select("owner");
+
+  if (!video) {
+     throw new ApiError(404, "Video not found");
+  }
+
+  try {
+    if (user && user.toString() !== video.owner.toString()) {
+       await Video.updateOne({ _id: videoId }, { $inc: { views: 1 } });
+  
+       await User.updateOne(
+         { _id: user },
+         { $addToSet: { watchHistory: videoId } }
+       );
+    }
+  } catch (error) {
+    throw new ApiError(408, "Error updating video counter");
+    
+  }
+
+  try {
+    const videoDetails = await Video.aggregate(
+      [
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(videoId)
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "owner",
+            foreignField: "_id",
+            as: "ownerDetails"
+          }
+        }, 
+        {
+          $unwind: "$ownerDetails"
+        },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            description: 1,
+            videoFile: 1,
+            thumbnailFile: 1,
+            duration: 1,
+            views: 1,
+            createdAt: 1,
+            updatedAt: 1,
+            isPublished: 1,
+            ownerDetails: {
+              _id: "$ownerDetails._id",
+              username: "$ownerDetails.username",
+              email: "$ownerDetails.email",
+              avatar: "$ownerDetails.avatar"
+            }
+          }
+        }
+      ]
+    )
+  
+    return res
+    .status(200)
+    .json(new ApiResponse(200, videoDetails[0], "Video fetched successfully"));
+  
+  } catch (error) {
+    throw new ApiError(408, "Error fetching video");
+    
+  }
 });
 
 const updateVideo = asyncHandler(async (req, res) => {
