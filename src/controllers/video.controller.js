@@ -210,7 +210,50 @@ const getVideoById = asyncHandler(async (req, res) => {
 
 const updateVideo = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
+  const { title, description, thumbnailFile } = req.body;
   //TODO: update video details like title, description, thumbnail
+
+  const updateFields = {};
+
+  if (title) updateFields.title =  title;
+  if (description) updateFields.description = description;
+
+  if(req.files?.thumbnailFile?.[0]){
+
+    const thumbnailLocalPath = req.files.thumbnailFile[0].path;
+    const thumbnail = await uploadToCloudinary(thumbnailLocalPath);
+    if (!thumbnail?.url) {
+      throw new ApiError(500, "Failed to upload thumbnail");
+    }
+    updateFields.thumbnailFile = thumbnail.url; 
+  }
+
+  if (Object.keys(updateFields).length === 0) {
+    throw new ApiError(400, "No Valid fields to update, please give valid fields");
+  }
+
+  let updatedVideoDetails;
+  try {
+    
+    updatedVideoDetails =  await Video.findByIdAndUpdate(
+      videoId,
+      { $set: updateFields },
+      { new: true }
+    );
+
+      return res
+        .status(200)
+        .json(new ApiResponse(200, updatedVideoDetails, "Video updated successfully"));
+
+  } catch (error) {
+
+    if(thumbnailFile){
+      await deleteFromCloudinary(thumbnailFile?.public_id);
+    }
+
+    throw new ApiError(408, "Error updating video");
+  }
+
 });
 
 const deleteVideo = asyncHandler(async (req, res) => {

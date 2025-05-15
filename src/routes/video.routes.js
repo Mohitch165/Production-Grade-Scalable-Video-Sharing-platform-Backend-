@@ -20,5 +20,11 @@ router.route("/uploadVideo").post(verifyJWT, upload.fields([
     }
 ]), publishAVideo)
 router.route("/getVideo/:videoId").get(verifyJWT, getVideoById);
+router.route("/updateVideoDetails/:videoId").put(verifyJWT, upload.fields([
+    {
+        name: "thumbnailFile",
+        maxCount: 1
+    }
+]), updateVideo);
 
 export default router;
