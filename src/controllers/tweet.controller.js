@@ -92,6 +92,42 @@ const getUserTweets = asyncHandler(async (req, res) => {
 
 const updateTweet = asyncHandler(async (req, res) => {
   //TODO: update tweet
+  const { tweetId } = req.params;
+  const { content } = req.body;
+
+  if(!tweetId || !isValidObjectId(tweetId)) {
+    throw new ApiError(400, "Invalid tweet id");
+  }
+
+  if(!content) {
+    throw new ApiError(400, "Content is required");
+  }
+
+  if (content.length > 280) {
+    throw new ApiError(400, "Tweet exceeds 280 character limit");
+  }
+
+  try {
+    const updatedTweet = await Tweet.findByIdAndUpdate(
+      tweetId,
+      { $set: { content } },
+      { new: true }
+    );
+
+    if (updatedTweet.owner.toString() !== req.user._id.toString()) {
+      throw new ApiError(403, "Not authorized to update this tweet");
+    }
+
+    if (!updatedTweet) {
+      throw new ApiError(404, "Tweet not found");
+    }
+
+    return res.status(200).json(new ApiResponse(200, updatedTweet, "Tweet updated successfully"));
+
+  } catch (error) {
+    throw new ApiError(500, "Error updating the Tweet");
+  }
+
 });
 
 const deleteTweet = asyncHandler(async (req, res) => {
