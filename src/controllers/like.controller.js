@@ -149,6 +149,58 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
 const getLikedVideos = asyncHandler(async (req, res) => {
   //TODO: get all liked videos
+  const { userId } = req.params;
+
+  if(!userId || !isValidObjectId(userId)){
+    throw new ApiError(400, "userId is not defined or not valid")
+  }
+
+  try {
+    const likedVideos = await Like.aggregate([
+      {
+        $match: {
+          likedBy: new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $lookup: {
+          from: "videos",
+          localField: "video",
+          foreignField: "_id",
+          as: "videoDetails",
+        },
+      },
+      {
+        $unwind: "$videoDetails",
+      },
+      {
+        $project: {
+          _id: 1,
+          videoId: "$videoDetails._id",
+          title: "$videoDetails.title",
+          description: "$videoDetails.description",
+          thumbnailFile: "$videoDetails.thumbnailFile",
+          views: "$videoDetails.views",
+          duration: "$videoDetails.duration",
+          isPublished: "$videoDetails.isPublished",
+          likedAt: "$createdAt",
+        },
+      },
+    ]);
+
+    console.log(likedVideos);
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, likedVideos, "Liked videos fetched successfully"));
+
+  } catch (error) {
+
+    console.error(error, error.message);
+    throw new ApiError(500, "Error getting liked videos", {
+      error: error.message
+    })
+  }
 });
 
 export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getLikedVideos };
