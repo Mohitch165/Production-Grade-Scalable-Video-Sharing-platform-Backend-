@@ -66,8 +66,6 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
     throw new ApiError(400, "userId is not defined or not valid")
   }
 
-  let message = existingLike ? "Comment unliked successfully" : "Comment liked successfully";
-
   try  {
 
     const existingLike = await Like.findOne({

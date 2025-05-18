@@ -20,6 +20,7 @@ import userRouter from "./routes/user.routes.js";
 import videoRouter from "./routes/video.routes.js";
 import tweetRouter from "./routes/tweet.routes.js";
 import likeRouter from "./routes/like.routes.js";
+import commentRouter from "./routes/comment.routes.js";
 import { errorHandler } from "./middleware/error.middlewares.js";
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
@@ -27,6 +28,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/video", videoRouter);
 app.use("/api/v1/tweet", tweetRouter)
 app.use("/api/v1/like", likeRouter)
+app.use("/api/v1/comment", commentRouter)
 app.use(errorHandler)
 
 export { app };
