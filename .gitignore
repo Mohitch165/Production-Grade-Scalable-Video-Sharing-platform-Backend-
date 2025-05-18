@@ -4,3 +4,4 @@ package-lock.json
 .prettierrc
 .env
 .env.sample
+.DS_Store

@@ -1,0 +1,948 @@
+{
+	"info": {
+		"_postman_id": "0687bf34-f5a0-41e7-9dc8-807735a018a9",
+		"name": "VideoTube",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37806384"
+	},
+	"item": [
+		{
+			"name": "HealthCheck",
+			"item": [
+				{
+					"name": "HealthCheck-Route",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/healthcheck",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"healthcheck"
+							]
+						},
+						"description": "This API endpoint is a simple health check that can be used to verify the availability and status of the service.\n\n### Request\n\nThis is a GET request to the specified URL.\n\n### Response\n\nThe response will include the status of the service, typically indicating whether the service is running and available."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserReg",
+			"item": [
+				{
+					"name": "Register-Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "mohitKmr22",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "mohitnlkmr@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "mohitCh321",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "Mohit Anil Kumar",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/Users/mohitchouhan/Downloads/IMG_9626.HEIC"
+								},
+								{
+									"key": "banner",
+									"type": "file",
+									"src": "/Users/mohitchouhan/Downloads/IMG_9706.HEIC"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						},
+						"description": "### Register User\n\nThis endpoint allows the client to register a new user by providing the necessary details.\n\n#### Request Body\n\n- `username` (text): The username of the user.\n    \n- `email` (text): The email address of the user.\n    \n- `password` (text): The password for the user account.\n    \n- `fullname` (text): The full name of the user.\n    \n- `avatar` (file): The avatar image file for the user.\n    \n- `banner` (file): The banner image file for the user.\n    \n\n#### Response\n\nThe response for this request is a JSON object conforming to the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"userId\": {\n      \"type\": \"string\"\n    },\n    \"username\": {\n      \"type\": \"string\"\n    },\n    \"email\": {\n      \"type\": \"string\"\n    },\n    \"fullname\": {\n      \"type\": \"string\"\n    },\n    \"avatarUrl\": {\n      \"type\": \"string\"\n    },\n    \"bannerUrl\": {\n      \"type\": \"string\"\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginUser",
+			"item": [
+				{
+					"name": "Login-Route",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"info.mohit321@gmail.com\",\n    \"password\": \"mohitCh321\",\n    \"username\": \"lowkeyloki05\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						},
+						"description": "### User Login\n\nThis endpoint allows users to log in by providing their email, password, and username.\n\n#### Request Body\n\n- email (string, required): The email of the user.\n    \n- password (string, required): The password of the user.\n    \n- username (string, required): The username of the user.\n    \n\n#### Response\n\n- statusCode (integer): Indicates the status of the response.\n    \n- data (object): Contains user details including _id, username, email, fullname, avatar, banner, watchHistory, createdAt, updatedAt, and __v.\n    \n- accessToken (string): Token for accessing protected routes.\n    \n- refreshToken (string): Token for refreshing the access token.\n    \n- message (string): A message related to the response.\n    \n- success (boolean): Indicates the success status of the response."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LogoutUser",
+			"item": [
+				{
+					"name": "Logout-Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"info.mohit321@gmail.com\",\n    \"password\": \"mohitCh321\",\n    \"username\": \"lowkeyloki05\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"logout"
+							]
+						},
+						"description": "### User Logout\n\nThis endpoint is used to log out a user from the system.\n\n#### Request Body\n\n- email (string, required): The email address of the user.\n    \n- password (string, required): The password of the user.\n    \n- username (string, required): The username of the user.\n    \n\n#### Response\n\nThe response for this request follows the JSON schema below:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"status\": {\n            \"type\": \"string\"\n        },\n        \"message\": {\n            \"type\": \"string\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Change-password",
+			"item": [
+				{
+					"name": "ChangePassword-Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"mohitCh321\",\n    \"newPassword\": \"kyaKaroge@420\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/change-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"change-password"
+							]
+						},
+						"description": "### Change User Password\n\nThis endpoint allows the user to change their password.\n\n#### Request Body\n\n- `oldPassword` (string, required): The user's current password.\n    \n- `newPassword` (string, required): The new password to be set.\n    \n\n#### Response\n\nThe response will be in JSON format and will include the following properties:\n\n- `success` (boolean): Indicates if the password change was successful.\n    \n- `message` (string): A message indicating the outcome of the password change process.\n    \n\nExample Request Body:\n\n``` json\n{\n  \"oldPassword\": \"********\",\n  \"newPassword\": \"********\"\n}\n\n ```\n\nExample Response:\n\n``` json\n{\n  \"success\": true,\n  \"message\": \"Password changed successfully.\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UpdateUser",
+			"item": [
+				{
+					"name": "UpdateDetails-Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"mohitkmr165\",\n    \"fullname\": \"Mohit Anil Kumar\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/update-details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"update-details"
+							]
+						},
+						"description": "### Update User Details\n\nThis endpoint allows the user to update their details.\n\n#### Request Body\n\n- `username` (string): The username of the user.\n    \n- `fullname` (string): The full name of the user.\n    \n\n#### Response\n\nThe response schema for this request is as follows:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"status\": {\n      \"type\": \"string\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Channel Details",
+			"item": [
+				{
+					"name": "GetAllVideos-Route",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/channel/mohitkmr165",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"channel",
+								"mohitkmr165"
+							]
+						},
+						"description": "The API endpoint retrieves the details of a specific user channel. The response returned by the API is a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"statusCode\": {\n            \"type\": \"number\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"username\": {\n                    \"type\": \"string\"\n                },\n                \"fullname\": {\n                    \"type\": \"string\"\n                },\n                \"avatar\": {\n                    \"type\": \"string\"\n                },\n                \"banner\": {\n                    \"type\": \"string\"\n                },\n                \"subscribersCount\": {\n                    \"type\": \"number\"\n                },\n                \"subscriptionsCount\": {\n                    \"type\": \"number\"\n                }\n            }\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload-Video",
+			"item": [
+				{
+					"name": "videoUpload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Iphone vs Samsung",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "testing route for documentation",
+									"type": "text"
+								},
+								{
+									"key": "videoFile",
+									"type": "file",
+									"src": "/Users/mohitchouhan/Downloads/6aa7b556-a607-4893-9c28-7e36f98e9b46.MP4"
+								},
+								{
+									"key": "thumbnailFile",
+									"type": "file",
+									"src": "/Users/mohitchouhan/Downloads/8BF97040-65F9-44C5-BB3D-6F88DD03A37F 2.JPG"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/video/uploadVideo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"video",
+								"uploadVideo"
+							]
+						},
+						"description": "### Upload Video\n\nThis endpoint allows the user to upload a video along with its details and thumbnail.\n\n#### Request Body Parameters\n\n- `title` (text): A brief title for the video.\n    \n- `description` (text): Description of the video content.\n    \n- `videoFile` (file): The video file to be uploaded.\n    \n- `thumbnailFile` (file): The thumbnail image for the video.\n    \n\n#### Response\n\nThe response schema for this request is as follows:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"statusCode\": {\n            \"type\": \"number\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"owner\": {\n                    \"type\": \"string\"\n                },\n                \"videoFile\": {\n                    \"type\": \"string\"\n                },\n                \"thumbnailFile\": {\n                    \"type\": \"string\"\n                },\n                \"title\": {\n                    \"type\": \"string\"\n                },\n                \"description\": {\n                    \"type\": \"string\"\n                },\n                \"duration\": {\n                    \"type\": \"number\"\n                },\n                \"views\": {\n                    \"type\": \"number\"\n                },\n                \"isPublished\": {\n                    \"type\": \"boolean\"\n                },\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"updatedAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"number\"\n                }\n            }\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    }\n}\n\n ```\n\nThis endpoint allows users to upload a video.\n\n#### Request Body\n\n- This request uses the form-data body type.\n    \n\n#### Response\n\nThe response for this request is a JSON schema. It includes the schema for the response body of the API."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetVideo",
+			"item": [
+				{
+					"name": "GetVideo-byID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/video/getVideo/6824fe75b1cc4ac0f223c963",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"video",
+								"getVideo",
+								"6824fe75b1cc4ac0f223c963"
+							]
+						},
+						"description": "### GET /api/v1/video/getVideo/{videoId}\n\nThis endpoint retrieves details of a specific video.\n\n#### Request\n\n- Path Parameters\n    \n    - `videoId` (string, required): The unique identifier of the video.\n        \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n- { \"statusCode\": 0, \"data\": { \"_id\": \"\", \"videoFile\": \"\", \"thumbnailFile\": \"\", \"title\": \"\", \"description\": \"\", \"duration\": 0, \"views\": 0, \"isPublished\": true, \"createdAt\": \"\", \"updatedAt\": \"\", \"ownerDetails\": { \"_id\": \"\", \"username\": \"\", \"email\": \"\", \"avatar\": \"\" } }, \"message\": \"\", \"success\": true }\n    \n\nThis response includes the details of the requested video, such as its ID, video file, thumbnail file, title, description, duration, views, publication status, creation and update timestamps, and owner details including ID, username, email, and avatar."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Video Details",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Iphone 20 leaks!",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "latest leaks of iphone 20 to be launched in July 2029",
+									"type": "text"
+								},
+								{
+									"key": "thumbnailFile",
+									"type": "file",
+									"src": "/Users/mohitchouhan/Downloads/IMG_9706.HEIC"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/video/updateVideoDetails/6824fe25b1cc4ac0f223c960",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"video",
+								"updateVideoDetails",
+								"6824fe25b1cc4ac0f223c960"
+							]
+						},
+						"description": "### Update Video Details\n\nThis endpoint is used to update the details of a specific video.\n\n#### Request Body Parameters\n\n- `title` (text): The updated title of the video.\n    \n- `description` (text): The updated description of the video.\n    \n- `thumbnailFile` (file): The updated thumbnail image file for the video.\n    \n\n#### Response\n\nUpon a successful update, the server will respond with a status code of 200 and a JSON object containing the following fields:\n\n- `statusCode` (number): The status code of the response.\n    \n- `data` (object): The updated video details, if applicable.\n    \n- `message` (string): A message regarding the update operation.\n    \n- `success` (boolean): Indicates whether the update was successful."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete Video",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/video/deleteVideo/682a5ddf96f3280a93aa1e29",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"video",
+								"deleteVideo",
+								"682a5ddf96f3280a93aa1e29"
+							]
+						},
+						"description": "### DELETE /api/v1/video/deleteVideo/{videoId}\n\nThis endpoint is used to delete a specific video.\n\n#### Request\n\nNo request body is required for this request. The `videoId` parameter should be included in the endpoint URL.\n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"statusCode\": {\n            \"type\": \"integer\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"owner\": {\n                    \"type\": \"string\"\n                },\n                \"videoFile\": {\n                    \"type\": \"string\"\n                },\n                \"thumbnailFile\": {\n                    \"type\": \"string\"\n                },\n                \"title\": {\n                    \"type\": \"string\"\n                },\n                \"description\": {\n                    \"type\": \"string\"\n                },\n                \"duration\": {\n                    \"type\": \"integer\"\n                },\n                \"views\": {\n                    \"type\": \"integer\"\n                },\n                \"isPublished\": {\n                    \"type\": \"boolean\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"updatedAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"integer\"\n                }\n            }\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Toggle Publish Status",
+			"item": [
+				{
+					"name": "togglePublishStatus",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/video/togglePublishStatus/6824fe75b1cc4ac0f223c963",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"video",
+								"togglePublishStatus",
+								"6824fe75b1cc4ac0f223c963"
+							]
+						},
+						"description": "### PATCH /api/v1/video/togglePublishStatus/{videoId}\n\nThis endpoint is used to toggle the publish status of a video with the given ID.\n\n#### Request Body\n\nNo request body is required for this endpoint.\n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"statusCode\": {\n            \"type\": \"number\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"owner\": {\n                    \"type\": \"string\"\n                },\n                \"videoFile\": {\n                    \"type\": \"string\"\n                },\n                \"thumbnailFile\": {\n                    \"type\": \"string\"\n                },\n                \"title\": {\n                    \"type\": \"string\"\n                },\n                \"description\": {\n                    \"type\": \"string\"\n                },\n                \"duration\": {\n                    \"type\": \"number\"\n                },\n                \"views\": {\n                    \"type\": \"number\"\n                },\n                \"isPublished\": {\n                    \"type\": \"boolean\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"updatedAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"number\"\n                }\n            }\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create Tweet",
+			"item": [
+				{
+					"name": "Create-Tweet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Oh bhai, ghar jaana hai mujhe toh bas ab.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/tweet/createTweet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"tweet",
+								"createTweet"
+							]
+						},
+						"description": "### Create a New Tweet\n\nThis endpoint allows you to create a new tweet.\n\n#### Request Body\n\n- content (text): The content of the tweet.\n    \n\nExample:\n\n``` json\n{\n  \"content\": \"Oh bhai, ghar jaana hai mujhe ...\"\n}\n\n ```\n\n#### Response\n\n- Status: 201\n    \n- Content-Type: application/json\n    \n\nExample:\n\n``` json\n{\n  \"statusCode\": 0,\n  \"data\": {\n    \"owner\": \"\",\n    \"content\": \"\",\n    \"_id\": \"\",\n    \"createdAt\": \"\",\n    \"updatedAt\": \"\",\n    \"__v\": 0\n  },\n  \"message\": \"\",\n  \"success\": true\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Tweets",
+			"item": [
+				{
+					"name": "GetAllTweetsByUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/tweet/getUserTweets/6808355710f1d708c0d9109c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"tweet",
+								"getUserTweets",
+								"6808355710f1d708c0d9109c"
+							]
+						},
+						"description": "### GET /api/v1/tweet/getUserTweets/{userId}\n\nThis endpoint retrieves the tweets of a specific user identified by their user ID.\n\n#### Request\n\nNo request body parameters are required for this endpoint.\n\n- Path parameter\n    \n    - userId (string, required): The unique identifier of the user whose tweets are to be retrieved.\n        \n\n#### Response\n\nThe response will be in JSON format and will have the following schema:\n\n``` json\n{\n    \"statusCode\": number,\n    \"data\": {\n        \"_id\": string,\n        \"username\": string,\n        \"email\": string,\n        \"fullname\": string,\n        \"avatar\": string,\n        \"allTweets\": [\n            {\n                \"_id\": string,\n                \"owner\": string,\n                \"content\": string,\n                \"createdAt\": string,\n                \"updatedAt\": string,\n                \"__v\": number\n            }\n        ]\n    },\n    \"message\": string,\n    \"success\": boolean\n}\n\n ```\n\n- statusCode (number): A code indicating the status of the response.\n    \n- data (object): An object containing user and tweet information.\n    \n    - _id (string): The unique identifier of the user.\n        \n    - username (string): The username of the user.\n        \n    - email (string): The email address of the user.\n        \n    - fullname (string): The full name of the user.\n        \n    - avatar (string): The URL of the user's avatar image.\n        \n    - allTweets (array): An array of all tweets belonging to the user.\n        \n        - _id (string): The unique identifier of the tweet.\n            \n        - owner (string): The owner of the tweet.\n            \n        - content (string): The content of the tweet.\n            \n        - createdAt (string): The timestamp when the tweet was created.\n            \n        - updatedAt (string): The timestamp when the tweet was last updated.\n            \n        - __v (number): Version control field.\n            \n- message (string): A message related to the response.\n    \n- success (boolean): Indicates if the request was successful (true) or not (false)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UpdateTweet",
+			"item": [
+				{
+					"name": "UpdateTweet",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/tweet/updateTweet/682a5ede96f3280a93aa1e33",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"tweet",
+								"updateTweet",
+								"682a5ede96f3280a93aa1e33"
+							]
+						},
+						"description": "This endpoint makes an HTTP PATCH request to update a specific tweet. The request should be sent to [http://localhost:8003/api/v1/tweet/updateTweet/682a5ede96f3280a93aa1e33](http://localhost:8003/api/v1/tweet/updateTweet/682a5ede96f3280a93aa1e33) with a JSON payload in the raw request body type. The payload should include the \"content\" field to update the tweet content.\n\n### Request Body\n\n- content (string, required): The updated content of the tweet.\n    \n\n### Response\n\nUpon a successful execution (Status: 200), the response will be in JSON format with the following structure:\n\n``` json\n{\n    \"statusCode\": 0,\n    \"data\": {\n        \"_id\": \"\",\n        \"owner\": \"\",\n        \"content\": \"\",\n        \"createdAt\": \"\",\n        \"updatedAt\": \"\",\n        \"__v\": 0\n    },\n    \"message\": \"\",\n    \"success\": true\n}\n\n ```\n\nThe \"data\" object in the response will contain the updated tweet details, including the tweet ID, owner, content, creation and update timestamps, and version. The \"statusCode\" will indicate the status of the operation, and \"success\" will be true if the update is successful."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DeleteTweet",
+			"item": [
+				{
+					"name": "DeleteTweetId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/tweet/deleteTweet/682a5ede96f3280a93aa1e33",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"tweet",
+								"deleteTweet",
+								"682a5ede96f3280a93aa1e33"
+							]
+						},
+						"description": "### Delete Tweet\n\nThis endpoint is used to delete a specific tweet.\n\n#### Request\n\n- Method: DELETE\n    \n- URL: `http://localhost:8003/api/v1/tweet/deleteTweet/682a5ede96f3280a93aa1e33`\n    \n\n#### Response\n\nThe response is in JSON format and follows the schema below:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"statusCode\": {\n            \"type\": \"number\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"_id\": {\n                    \"type\": \"string\"\n                },\n                \"owner\": {\n                    \"type\": \"string\"\n                },\n                \"content\": {\n                    \"type\": \"string\"\n                },\n                \"createdAt\": {\n                    \"type\": \"string\"\n                },\n                \"updatedAt\": {\n                    \"type\": \"string\"\n                },\n                \"__v\": {\n                    \"type\": \"number\"\n                }\n            }\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Like Video",
+			"item": [
+				{
+					"name": "LikeVideo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/like/toggleVideoLike/682507eb2d7bca7662d25121",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"like",
+								"toggleVideoLike",
+								"682507eb2d7bca7662d25121"
+							]
+						},
+						"description": "This API endpoint is a POST request to toggle the like status of a specific video. The request should include the video ID in the URL path. Upon successful execution, the response will have a status code of 200 and a JSON body with the following structure:\n\n``` json\n{\n    \"statusCode\": 0,\n    \"data\": null,\n    \"message\": \"\",\n    \"success\": true\n}\n\n ```\n\nThe `statusCode` indicates the status of the operation, `data` contains the relevant information (in this case, null), `message` provides any additional details, and `success` indicates whether the operation was successful."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Like Tweet",
+			"item": [
+				{
+					"name": "liketweet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/like/toggletweetLike/682703a33f527488751b03a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"like",
+								"toggletweetLike",
+								"682703a33f527488751b03a9"
+							]
+						},
+						"description": "This endpoint allows users to toggle the like status of a specific tweet by sending an HTTP POST request to the provided URL. The request should include the tweet ID in the URL path.\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response\n\nUpon a successful execution, the server will respond with a status code of 200 and a JSON object in the response body. The JSON object contains the following fields:\n\n- \"statusCode\": A numeric status code indicating the result of the operation.\n    \n- \"data\": A null value as the tweet like status is toggled and not returning any specific data.\n    \n- \"message\": A message string providing additional information about the operation.\n    \n- \"success\": A boolean value indicating the success of the like toggle operation."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetAllLikedVideos",
+			"item": [
+				{
+					"name": "GetLikedvideos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/like/getLikedVideos/6808355710f1d708c0d9109c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"like",
+								"getLikedVideos",
+								"6808355710f1d708c0d9109c"
+							]
+						},
+						"description": "### Get Liked Videos\n\nThis endpoint retrieves a list of liked videos for a specific user.\n\n#### Request\n\n- Method: GET\n    \n- URL: `http://localhost:8003/api/v1/like/getLikedVideos/6808355710f1d708c0d9109c`\n    \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n- { \"statusCode\": 0, \"data\": \\[ { \"_id\": \"\", \"videoId\": \"\", \"title\": \"\", \"description\": \"\", \"thumbnailFile\": \"\", \"views\": 0, \"duration\": 0, \"isPublished\": true, \"likedAt\": \"\" } \\], \"message\": \"\", \"success\": true}  \n    The response contains an array of objects, each representing a liked video with details such as video ID, title, description, thumbnail, views, duration, publication status, and the date it was liked."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Add Comment",
+			"item": [
+				{
+					"name": "addComment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Hey guys, this is my seventh comment! I love my girlfriend even more.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/comment/createComment/682507872d7bca7662d2511e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"comment",
+								"createComment",
+								"682507872d7bca7662d2511e"
+							]
+						},
+						"description": "### Create Comment\n\nThis endpoint allows the user to create a new comment.\n\n#### Request Body\n\n- content (text, required): The content of the comment.\n    \n\n#### Response\n\nThe response will be a JSON object with the following properties:\n\n- statusCode (number): The status code of the response.\n    \n- data (object): An object containing the details of the newly created comment, including video, owner, content, _id, createdAt, updatedAt, and __v.\n    \n- message (string): A message related to the response.\n    \n- success (boolean): Indicates if the request was successful.\n    \n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"statusCode\": {\n      \"type\": \"number\"\n    },\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"video\": {\n          \"type\": \"string\"\n        },\n        \"owner\": {\n          \"type\": \"string\"\n        },\n        \"content\": {\n          \"type\": \"string\"\n        },\n        \"_id\": {\n          \"type\": \"string\"\n        },\n        \"createdAt\": {\n          \"type\": \"string\"\n        },\n        \"updatedAt\": {\n          \"type\": \"string\"\n        },\n        \"__v\": {\n          \"type\": \"number\"\n        }\n      }\n    },\n    \"message\": {\n      \"type\": \"string\"\n    },\n    \"success\": {\n      \"type\": \"boolean\"\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gett All Comments",
+			"item": [
+				{
+					"name": "getAllComments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/comment/getComments/682507872d7bca7662d2511e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"comment",
+								"getComments",
+								"682507872d7bca7662d2511e"
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve comments associated with a specific video. The request URL includes the video ID as a path parameter.\n\n### Request\n\nNo request body is required for this endpoint.\n\n#### Path Parameters\n\n- `videoId` (string, required): The unique identifier of the video for which comments are to be retrieved.\n    \n\n### Response\n\nUpon a successful request, the server responds with a status code of 200 and a JSON object in the response body.\n\n#### Response Body\n\n- `statusCode` (number): A code indicating the status of the response.\n    \n- `data` (array): An array containing comment objects, where each object includes the following keys:\n    \n    - `_id` (string): The unique identifier of the comment.\n        \n    - `video` (string): The ID of the associated video.\n        \n    - `owner` (string): The ID of the comment owner.\n        \n    - `content` (string): The content of the comment.\n        \n    - `createdAt` (string): The timestamp of the comment creation.\n        \n    - `updatedAt` (string): The timestamp of the comment update.\n        \n    - `__v` (number): Version key.\n        \n- `message` (string): A message from the server, if applicable.\n    \n- `success` (boolean): Indicates whether the request was successful."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Comment",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Hey guys, still my seventh comment, still love my girlfriend but a little less\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8003/api/v1/comment/updateComment/682a3b63ed758befc88e72d7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"comment",
+								"updateComment",
+								"682a3b63ed758befc88e72d7"
+							]
+						},
+						"description": "### Update Comment\n\nThis endpoint is used to update a specific comment by sending an HTTP PATCH request to the specified URL.\n\n#### Request Body\n\n- content (text): The updated content of the comment.\n    \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\nThe response will include a JSON object with the following properties:\n\n- statusCode: The status code of the response.\n    \n- data: An object containing the updated comment details, including _id, video, owner, content, createdAt, updatedAt, and __v.\n    \n- message: A message related to the response.\n    \n- success: Indicates whether the update was successful."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete Comment",
+			"item": [
+				{
+					"name": "deleteComment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/comment/deleteComment/682a5fd496f3280a93aa1e4e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"comment",
+								"deleteComment",
+								"682a5fd496f3280a93aa1e4e"
+							]
+						},
+						"description": "This endpoint sends an HTTP DELETE request to delete a specific comment with the given ID. The request body is empty as it only requires the comment ID in the URL parameter.\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\nThe response will include a JSON object with the following fields:\n\n- statusCode (number): Indicates the status of the operation.\n    \n- data (object): Contains details of the deleted comment, including its ID, video, owner, content, creation and update timestamps, and version.\n    \n- message (string): An optional message related to the operation.\n    \n- success (boolean): Indicates whether the operation was successful."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Toggle Subscription",
+			"item": [
+				{
+					"name": "toggleSubscription",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/subscription/toggleSubscription/680835f89f8deb15531ce0a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"subscription",
+								"toggleSubscription",
+								"680835f89f8deb15531ce0a4"
+							]
+						},
+						"description": "### Toggle Subscription\n\nThis endpoint is used to toggle the subscription for a specific user.\n\n**Request Body**\n\n- No request body parameters are required.\n    \n\n**Response**\n\n- `statusCode` (number): The status code of the response.\n    \n- `data` (object): The data related to the subscription toggle.\n    \n- `message` (string): A message related to the subscription toggle.\n    \n- `success` (boolean): Indicates whether the subscription toggle was successful.\n    \n\nExample Response:\n\n``` json\n{\n    \"statusCode\": 0,\n    \"data\": {},\n    \"message\": \"\",\n    \"success\": true\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Subscribers",
+			"item": [
+				{
+					"name": "getAllUserSubscribers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/subscription/getSubscribedChannels/6808355710f1d708c0d9109c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"subscription",
+								"getSubscribedChannels",
+								"6808355710f1d708c0d9109c"
+							]
+						},
+						"description": "### GET /api/v1/subscription/getSubscribedChannels/{userId}\n\nThis endpoint retrieves the subscribed channels for a specific user.\n\n#### Request\n\nNo request body parameters required.\n\n- Path Parameters\n    \n    - userId (string, required): The unique identifier of the user.\n        \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"statusCode\": {\n            \"type\": \"number\"\n        },\n        \"data\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"_id\": {\n                        \"type\": \"string\"\n                    },\n                    \"createdAt\": {\n                        \"type\": \"string\"\n                    },\n                    \"channelDetails\": {\n                        \"type\": \"object\",\n                        \"properties\": {\n                            \"_id\": {\n                                \"type\": \"string\"\n                            },\n                            \"username\": {\n                                \"type\": \"string\"\n                            },\n                            \"email\": {\n                                \"type\": \"string\"\n                            },\n                            \"avatar\": {\n                                \"type\": \"string\"\n                            }\n                        }\n                    }\n                }\n            }\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"success\": {\n            \"type\": \"boolean\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Channel Stats",
+			"item": [
+				{
+					"name": "getChannelStats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/channel-stats/6808355710f1d708c0d9109c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"channel-stats",
+								"6808355710f1d708c0d9109c"
+							]
+						},
+						"description": "This API endpoint retrieves the statistics for a specific user channel.\n\n### Request\n\n- Method: GET\n    \n- URL: `http://localhost:8003/api/v1/user/channel-stats/6808355710f1d708c0d9109c`\n    \n\n### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"statusCode\": 0,\n    \"data\": {\n        \"totalVideos\": 0,\n        \"totalViews\": 0,\n        \"totalLikes\": 0,\n        \"totalSubscribers\": 0\n    },\n    \"message\": \"\",\n    \"success\": true\n}\n\n ```\n\nThe response contains the statistics for the user's channel, including the total number of videos, views, likes, and subscribers."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Videos on Channel",
+			"item": [
+				{
+					"name": "getAllVideos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8003/api/v1/user/channel-videos/6808355710f1d708c0d9109c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"channel-videos",
+								"6808355710f1d708c0d9109c"
+							]
+						},
+						"description": "This API endpoint sends an HTTP GET request to retrieve channel videos for a specific user. The request should include the user's unique channel ID in the URL path.\n\n### Request\n\n- Method: GET\n    \n- URL: `http://localhost:8003/api/v1/user/channel-videos/6808355710f1d708c0d9109c`\n    \n\n### Response\n\nUpon a successful request, the server will respond with a status code of 200 and a JSON object in the response body. The response will contain a `statusCode`, `data`, `message`, and `success` fields. The `data` field is an array of video objects, each containing properties such as `_id`, `thumbnailFile`, `title`, `description`, `duration`, `views`, `isPublished`, and `createdAt`."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
