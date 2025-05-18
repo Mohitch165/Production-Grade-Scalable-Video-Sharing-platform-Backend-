@@ -2,6 +2,8 @@ import { Router } from "express";
 
 import { registerUser, loginUser, logoutUser, changePassword, regenRefAccToken, updateUserDetails, getUserChannelDetails, watchHistory } from "../controllers/user.controller.js";
 
+import { getChannelStats, getChannelVideos } from "../controllers/dashboard.controller.js";
+
 import { verifyJWT } from "../middleware/auth.middlewares.js";
 
 import { upload } from "../middleware/multer.middlewares.js";
@@ -36,5 +38,7 @@ router.route("/update-details").post(verifyJWT, upload.fields([
 
 router.route("/channel/:username").get(verifyJWT, getUserChannelDetails);
 router.route("/watch-history").get(verifyJWT, watchHistory);
+router.route("/channel-stats/:channelId").get(verifyJWT, getChannelStats);
+router.route("/channel-videos/:channelId").get(verifyJWT, getChannelVideos);
 
 export default router;
