@@ -1,14 +1,3 @@
-Awesome — let’s take this README to the next level with some **visuals, flair, and stats**. Here’s the upgraded version, complete with:
-
-* ✅ **GitHub badges**
-* 📊 **Repo stats**
-* 🎞️ **GIF placeholders for demo (you can swap in your own)**
-* 📷 **Cloudinary image samples**
-* 🤓 **More personality**
-
----
-
-```markdown
 # 🎬 Production-Grade Scalable Video Sharing Platform Backend
 
 <p align="center">
@@ -89,14 +78,6 @@ const result = await cloudinary.v2.uploader.upload(videoFile, {
 });
 ```
 
-> Tip: You can embed your Cloudinary sample thumbnails here for visual appeal.
-
-<p align="center">
-  <img src="https://res.cloudinary.com/demo/image/upload/w_300/sample.jpg" width="300px" />
-</p>
-
----
-
 ## 🛠️ Getting Started
 
 1. **Clone the repo**
@@ -173,5 +154,3 @@ You’re not just deploying an API, you’re launching a **framework for growth*
 > *“Great backends don't just serve requests, they serve legacies.”*
 
 ---
-
-```
